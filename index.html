@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.8.0/leaflet.css" />
+  <style>
+    #map {
+        width: 1000px;
+        height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.8.0/leaflet.js"></script>
+  <script>
+    let tiles = new L.tileLayer('https://maps-{s}.onemap.sg/v3/Default/{z}/{x}/{y}.png', {
+      detectRetina: true,
+      maxZoom: 18,
+      minZoom: 11,
+      //Do not remove this attribution
+      attribution: '<img src="https://docs.onemap.sg/maps/images/oneMap64-01.png" style="height:20px;width:20px;">' +
+                   'New OneMap | Map data © contributors, <a href="http://SLA.gov.sg">Singapore Land Authority</a>'
+    });
+    //let map = new L.Map('map', {center: [1.347833, 103.809357], zoom: 12})
+    //    .addLayer(tiles);
+    let map = new L.Map("map", {
+    center: [1.347833, 103.809357], 
+    zoom: 11,
+    maxBounds: L.latLngBounds(L.latLng(1.1, 103.5), L.latLng(1.5, 104.3))
+    })
+    .addLayer(tiles);
+    //var marker = L.marker([1.3782095020266083, 103.848713922754279]).addTo(map);
+    
+
+    async function fetchTwentyFourHourData() {
+      let response = await fetch('https://api.data.gov.sg/v1/environment/psi');
+      let data = await response.json();
+      let readings = data.items[0].readings
+      console.log(readings)  
+
+      var northCircle = L.circle([1.4216729338264735, 103.81151216434296], {
+        color: 'green',
+        fillColor: 'lightgreen',
+        fillOpacity: 0.5,
+        radius: parseInt(readings['psi_twenty_four_hourly'].north) * 50
+      }).addTo(map);
+      northCircle.bindPopup(readings['psi_twenty_four_hourly'].north.toString());
+
+      var eastCircle = L.circle([1.3562424405543838, 103.92446539073656], {
+          color: 'green',
+          fillColor: 'lightgreen',
+          fillOpacity: 0.5,
+          radius: parseInt(readings['psi_twenty_four_hourly'].east) * 50
+      }).addTo(map);
+      eastCircle.bindPopup(readings['psi_twenty_four_hourly'].east.toString());
+      var southCircle = L.circle([1.2910285280813125, 103.82524510971103], {
+          color: 'green',
+          fillColor: 'lightgreen',
+          fillOpacity: 0.5,
+          radius: parseInt(readings['psi_twenty_four_hourly'].south) * 50
+      }).addTo(map);
+      southCircle.bindPopup(readings['psi_twenty_four_hourly'].south.toString());
+      var westCircle = L.circle([1.3637934132464697, 103.70679875346949], {
+          color: 'green',
+          fillColor: 'lightgreen',
+          fillOpacity: 0.5,
+          radius: parseInt(readings['psi_twenty_four_hourly'].west) * 50
+      }).addTo(map);
+      westCircle.bindPopup(readings['psi_twenty_four_hourly'].west.toString());
+      var centralCircle = L.circle([1.3528101724433994, 103.82730504634132], {
+          color: 'green',
+          fillColor: 'lightgreen',
+          fillOpacity: 0.5,
+          radius: parseInt(readings['psi_twenty_four_hourly'].central) * 50
+      }).addTo(map);
+      centralCircle.bindPopup(readings['psi_twenty_four_hourly'].central.toString());
+    };
+    fetchTwentyFourHourData();
+  </script>
+</body>
+</html>
