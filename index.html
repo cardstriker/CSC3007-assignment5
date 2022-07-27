@@ -9,6 +9,13 @@
         width: 1000px;
         height: 600px;
     }
+    .leaflet-tooltip-pane .toolt {
+        border: 0;
+        color: blue;
+        background: transparent;
+        box-shadow: none;
+        font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -40,42 +47,71 @@
       let readings = data.items[0].readings
       console.log(readings)  
 
-      var northCircle = L.circle([1.4216729338264735, 103.81151216434296], {
+      var northCircle = L.circle([data.region_metadata[5].label_location.latitude, data.region_metadata[5].label_location.longitude], {
         color: 'green',
         fillColor: 'lightgreen',
         fillOpacity: 0.5,
         radius: parseInt(readings['psi_twenty_four_hourly'].north) * 50
       }).addTo(map);
-      northCircle.bindPopup(readings['psi_twenty_four_hourly'].north.toString());
 
-      var eastCircle = L.circle([1.3562424405543838, 103.92446539073656], {
+      var northTool = L.tooltip({
+        permanent: true,
+        direction: 'center',
+        className: 'toolt',
+      }).setContent(readings['psi_twenty_four_hourly'].north.toString()).setLatLng([data.region_metadata[5].label_location.latitude, data.region_metadata[5].label_location.longitude]).addTo(map)
+
+      var eastCircle = L.circle([data.region_metadata[2].label_location.latitude, data.region_metadata[2].label_location.longitude], {
           color: 'green',
           fillColor: 'lightgreen',
           fillOpacity: 0.5,
           radius: parseInt(readings['psi_twenty_four_hourly'].east) * 50
       }).addTo(map);
-      eastCircle.bindPopup(readings['psi_twenty_four_hourly'].east.toString());
-      var southCircle = L.circle([1.2910285280813125, 103.82524510971103], {
+
+      var eastTool = L.tooltip({
+        permanent: true,
+        direction: 'center',
+        className: 'toolt',
+      }).setContent(readings['psi_twenty_four_hourly'].east.toString()).setLatLng([data.region_metadata[2].label_location.latitude, data.region_metadata[2].label_location.longitude]).addTo(map)
+
+      var southCircle = L.circle([data.region_metadata[4].label_location.latitude, data.region_metadata[4].label_location.longitude], {
           color: 'green',
           fillColor: 'lightgreen',
           fillOpacity: 0.5,
           radius: parseInt(readings['psi_twenty_four_hourly'].south) * 50
       }).addTo(map);
-      southCircle.bindPopup(readings['psi_twenty_four_hourly'].south.toString());
-      var westCircle = L.circle([1.3637934132464697, 103.70679875346949], {
+
+      var southTool = L.tooltip({
+        permanent: true,
+        direction: 'center',
+        className: 'toolt',
+      }).setContent(readings['psi_twenty_four_hourly'].south.toString()).setLatLng([data.region_metadata[4].label_location.latitude, data.region_metadata[4].label_location.longitude]).addTo(map)
+
+      var westCircle = L.circle([data.region_metadata[0].label_location.latitude, data.region_metadata[0].label_location.longitude], {
           color: 'green',
           fillColor: 'lightgreen',
           fillOpacity: 0.5,
           radius: parseInt(readings['psi_twenty_four_hourly'].west) * 50
       }).addTo(map);
-      westCircle.bindPopup(readings['psi_twenty_four_hourly'].west.toString());
-      var centralCircle = L.circle([1.3528101724433994, 103.82730504634132], {
+
+      var westTool = L.tooltip({
+        permanent: true,
+        direction: 'center',
+        className: 'toolt',
+      }).setContent(readings['psi_twenty_four_hourly'].west.toString()).setLatLng([data.region_metadata[0].label_location.latitude, data.region_metadata[0].label_location.longitude]).addTo(map)
+
+      var centralCircle = L.circle([data.region_metadata[3].label_location.latitude, data.region_metadata[3].label_location.longitude], {
           color: 'green',
           fillColor: 'lightgreen',
           fillOpacity: 0.5,
           radius: parseInt(readings['psi_twenty_four_hourly'].central) * 50
       }).addTo(map);
-      centralCircle.bindPopup(readings['psi_twenty_four_hourly'].central.toString());
+
+      var centralTool = L.tooltip({
+        permanent: true,
+        direction: 'center',
+        className: 'toolt',
+      }).setContent(readings['psi_twenty_four_hourly'].central.toString()).setLatLng([data.region_metadata[3].label_location.latitude, data.region_metadata[3].label_location.longitude]).addTo(map)
+
     };
     fetchTwentyFourHourData();
   </script>
